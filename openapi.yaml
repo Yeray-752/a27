@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  title: API de Bicicletas
+  version: 1.0.0
+  description: Documentación de la red de bicicletas
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor Local
+
+paths:
+  /api/bicicletas:
+    get:
+      summary: Listar todas las bicicletas
+      responses:
+        '200':
+          description: Una lista de bicicletas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bicicletas:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Bicicleta'
+
+  /api/bicicletas/create:
+    post:
+      summary: Crear una bicicleta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BicicletaInput'
+      responses:
+        '201':
+          description: Bicicleta creada exitosamente
+
+  /api/bicicletas/update:
+    put:
+      summary: Actualizar una bicicleta existente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BicicletaInput'
+      responses:
+        '201':
+          description: Bicicleta actualizada exitosamente
+
+  /api/bicicletas/delete:
+    delete:
+      summary: Eliminar una bicicleta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '204':
+          description: Bicicleta eliminada (sin contenido)
+
+components:
+  schemas:
+    # Este es el objeto que devuelve tu API (con el array ubicacion)
+    Bicicleta:
+      type: object
+      properties:
+        id:
+          type: integer
+        color:
+          type: string
+        modelo:
+          type: string
+        ubicacion:
+          type: array
+          items:
+            type: number
+          example: [28.503, -13.853]
+
+    # Este es el objeto que recibe tu controlador (latitud y longitud separadas)
+    BicicletaInput:
+      type: object
+      required:
+        - id
+        - color
+        - modelo
+      properties:
+        id:
+          type: integer
+        color:
+          type: string
+        modelo:
+          type: string
+        latitud:
+          type: number
+        longitud:
+          type: number
